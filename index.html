@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prueba de Interferencia Cognitiva</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #0f172a; color: #fff; text-align: center; padding: 20px; }
+    #box { width: 100%; max-width: 400px; height: 250px; margin: 20px auto; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: bold; cursor: pointer; user-select: none; }
+    .btn { background: #38bdf8; color: #0f172a; border: none; padding: 12px 24px; font-size: 1rem; font-weight: bold; border-radius: 8px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h2>Evaluador de Procesamiento Cognitivo</h2>
+  <p>Toca la tarjeta cuando la palabra coincida con el color real del texto.</p>
+  <button class="btn" onclick="iniciarPrueba()">Comenzar Test</button>
+  <div id="box" style="background: #334155;">Presiona Iniciar</div>
+  <p id="resultado"></p>
+
+  <script>
+    const datos = [
+      { texto: "ROJO", color: "#ef4444", correcto: true },
+      { texto: "VERDE", color: "#22c55e", correcto: true },
+      { texto: "ROJO", color: "#22c55e", correcto: false },
+      { texto: "VERDE", color: "#ef4444", correcto: false }
+    ];
+    let tiempoInicio, itemActual;
+
+    function iniciarPrueba() {
+      document.getElementById('resultado').innerText = "Atento...";
+      document.getElementById('box').style.background = "#1e293b";
+      document.getElementById('box').innerText = "...";
+      
+      setTimeout(() => {
+        itemActual = datos[Math.floor(Math.random() * datos.length)];
+        const box = document.getElementById('box');
+        box.innerText = itemActual.texto;
+        box.style.color = itemActual.color;
+        tiempoInicio = performance.now();
+      }, Math.floor(Math.random() * 2000) + 1000);
+    }
+
+    document.getElementById('box').onclick = function() {
+      if (!tiempoInicio) return;
+      const tiempoReaccion = Math.round(performance.now() - tiempoInicio);
+      document.getElementById('resultado').innerText = `Tiempo de respuesta: ${tiempoReaccion} ms | ¿Respuesta válida?: ${itemActual.correcto ? 'Sí' : 'No'}`;
+      tiempoInicio = null;
+    };
+  </script>
+</body>
+</html>
